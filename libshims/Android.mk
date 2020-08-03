@@ -33,3 +33,11 @@ LOCAL_VENDOR_MODULE := true
 
 include $(BUILD_SHARED_LIBRARY)
 
+
+include $(CLEAR_VARS)
+LOCAL_SRC_FILES := ims_shim.cpp
+LOCAL_MODULE := libshim_ims
+LOCAL_MODULE_TAGS := optional
+LOCAL_MULTILIB := 64
+LOCAL_MODULE_PATH_64 := $(PRODUCT_OUT)/system/vendor/lib64
+include $(BUILD_SHARED_LIBRARY)

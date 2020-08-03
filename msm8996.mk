@@ -230,7 +230,9 @@ PRODUCT_PACKAGES += \
 
 # IMS
 PRODUCT_PACKAGES += \
-    ims-ext-common
+    ims-ext-common \
+    ims_ext_common.xml \
+    libshim_ims
 
 # IRQ
 PRODUCT_COPY_FILES += \
@@ -359,14 +361,16 @@ PRODUCT_PACKAGES += \
 
 # Telephony
 PRODUCT_PACKAGES += \
+    ims-ext-common_system \
+    qti-telephony-hidl-wrapper \
+    qti_telephony_hidl_wrapper.xml \
+    qti-telephony-utils \
+    qti_telephony_utils.xml \
     telephony-ext
 
 PRODUCT_BOOT_JARS += \
+    ims-ext-common_system \
     telephony-ext
-
-# Trust HAL
-PRODUCT_PACKAGES += \
-    vendor.lineage.trust@1.0-service
 
 # USB
 PRODUCT_PACKAGES += \
