@@ -36,10 +36,12 @@ on charger
     write /sys/devices/system/cpu/cpu3/online 0
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "powersave"
     write /sys/module/lpm_levels/parameters/sleep_disabled 0
-    wait /dev/block/bootdevice
 
-service charger /charger
+service charger /system/bin/charger
     class charger
+    user system
+    group system graphics input
+    capabilities SYS_BOOT
     critical
     seclabel u:r:charger:s0
 
@@ -499,9 +501,6 @@ on post-fs-data
     # Create directory for hostapd
     mkdir /data/vendor/wifi/hostapd 0770 wifi wifi
 
-    # Create /data/vendor/time folder for time-services
-    mkdir /data/vendor/time/ 0700 system system
-
     mkdir /data/vendor/audio/ 0770 media audio
 
     # Create a folder for audio delta files
@@ -564,17 +563,17 @@ on post-fs-data
     mkdir /persist-lg/callfw 0770 radio radio
     mkdir /persist-lg/kmstore 0770 system system
     mkdir /persist-lg/lgdata 0771 radio radio
-    mkdir /persist-lg/lgdrm 0770 lgdrm lgdrm_acc
+    mkdir /persist-lg/lgdrm 0770 4001 4002
     mkdir /persist-lg/widevine 0770 drm system
     mkdir /persist-lg/firmware 0771 system system
     mkdir /persist-lg/secclk 0700 system system
     mkdir /persist-lg/chargerlogo 0770 system system
-    mkdir /persist-lg/multimedia 0770 media divxdrm
-    mkdir /persist-lg/multimedia/nx 0770 media divxdrm
-    mkdir /persist-lg/multimedia/uma 0770 media divxdrm
-    mkdir /persist-lg/multimedia/scnt 0770 media divxdrm
-    mkdir /persist-lg/multimedia/scnt/sdadf 0770 media divxdrm
-    mkdir /persist-lg/mms 0770 system lgmms
+    mkdir /persist-lg/multimedia 0770 media 4003
+    mkdir /persist-lg/multimedia/nx 0770 media 4003
+    mkdir /persist-lg/multimedia/uma 0770 media 4003
+    mkdir /persist-lg/multimedia/scnt 0770 media 4003
+    mkdir /persist-lg/multimedia/scnt/sdadf 0770 media 4003
+    mkdir /persist-lg/mms 0770 system 7001
     mkdir /persist-lg/mmoprt 0771 system system
     mkdir /persist-lg/encryption 0771 system system
     mkdir /persist-lg/secureks 0770 system system
@@ -639,12 +638,10 @@ service vendor.cnd /vendor/bin/cnd
     group system wifi inet radio wakelock net_admin
     writepid /dev/cpuset/system-background/tasks
 
-service vendor.dpmd /vendor/bin/dpmd
-    class late_start
-    socket dpmd stream 660 root system
-    group system readproc
-    writepid /dev/cpuset/system-background/tasks
-    disabled
+service vendor.dpmQmiMgr /vendor/bin/dpmQmiMgr
+    class main
+    user system
+    group radio system
 
 service vendor.imsqmidaemon /vendor/bin/imsqmidaemon
     class main
@@ -779,7 +776,7 @@ service vendor.sensor-sh /vendor/bin/init.qcom.sensors.sh
 service vendor.sensors /vendor/bin/sensors.qti
     class core
     user root
-    group root
+    group root system
     disabled
     writepid /dev/cpuset/system-background/tasks
 
