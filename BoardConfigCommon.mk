@@ -138,6 +138,9 @@ TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
 TARGET_USES_HWC2 := true
 TARGET_USES_GRALLOC1 := true
 
+# DRM
+TARGET_ENABLE_MEDIADRM_64 := true
+
 # Encryption
 TARGET_HW_DISK_ENCRYPTION := true
 
@@ -207,4 +210,4 @@ TARGET_RELEASETOOLS_EXTENSIONS := $(COMMON_PATH)
 TARGET_RECOVERY_UPDATER_LIBS := librecovery_updater_msm8996
 
 # inherit from the proprietary version
--include vendor/lge/msm8996-common/BoardConfigVendor.mk
+include vendor/lge/msm8996-common/BoardConfigVendor.mk
